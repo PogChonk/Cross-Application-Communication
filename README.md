@@ -1,1 +1,3 @@
 ## Hello!
+- [x] Practice
+- [ ] Finish
