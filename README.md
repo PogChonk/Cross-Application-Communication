@@ -48,7 +48,7 @@ Though you don't need extensive knowledge as this is a step-by-step guide. You j
 
 ## Step 1: Glitch
 
-### Setting up our environent
+### Step 1A: Setting up our environent
 
 Head over to [glitch.com](https://glitch.com/) and sign in if you have an account, or create one if you don't have an account.
 
@@ -78,7 +78,7 @@ Why do we need these files? Well...
 * We also need **main.py** which is where our **REST API** will be running.
 * And **requirements.txt** is how we'll be installing our 2 requirements, **Flask** (REST API) and **Gunicorn** (WSGI Server)
 
-### Setting up our JSON file
+### Step 1B: Setting up our JSON file
 
 This file is how we'll tell Glitch to run **main.py** via our WSGI Server, Gunicorn.
 
@@ -158,7 +158,7 @@ Alright, now the rest aren't really important. After all this, your **glitch.jso
 
 That's our **glitch.json** file done!
 
-### Setting up our Requirements file
+### Step 1C: Setting up our Requirements file
 
 There are only 2 libraries we'll need. Those being: `Flask` and `Gunicorn`.
 
