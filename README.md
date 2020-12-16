@@ -22,7 +22,7 @@ And then of course, we'll need Roblox Studio if you don't have that downloaded a
 
 * #### What is a REST API?
 
-A **REST API** is simply a web server architectural style for handling HTTP Requests. 
+A **REST API** is simply a web server architectural style for handling HTTP Requests, it's also sometimes called **RESTful API**.
 
 **REST** stands for Representational (RE) State (S) Transfer (T) **->** Representational State Transfer (REST).
 
@@ -172,6 +172,67 @@ Gunicorn
 And that's the `requirements.txt` setup! Now's the tricky part, our REST API!
 
 ### Step 1D: Setting up our REST API (main.py) file
+
+Let's start off by importing everything we need.
+
+* What we'll need
+  * from flask
+    * import Flask
+    * import request
+  * from flask_restful
+    * import Api
+
+`flask` and `flask_restful` are the libraries installed from `Flask` from the `requirements.txt` file.
+
+`Flask` and `request` are from `flask` and `Api` is from `flask_restful` which came with `Flask`.
+
+So, your code should look something like...
+
+```py
+from flask import Flask, request
+from flask_restful import Api
+```
+
+Now we need to setup our app, so we can setup our api.
+
+We can do that by creating a new `app` object from `Flask`.
+
+`app = Flask(__name__)`
+
+Now we have our app, now we need our `api` object from `Api`.
+
+`api = Api(app)`
+
+Now you should have
+
+```py
+app = Flask(__name__)
+api = Api(app)
+```
+
+Now, our API won't be running. We have to call `app.run()` *under everything*.
+
+We'll be using
+
+```py
+if __name__ == "__main__":
+  app.run(debug=False)
+```
+
+So we only run the code if's being directly called and not imported.
+
+So after everything, your code should look like.
+
+```py
+from flask import Flask, request
+from flask_restful import Api
+
+app = Flask(__name__)
+api = Api(app)
+
+if __name__ == "__main__":
+  app.run(debug=False)
+```
 
 
 
