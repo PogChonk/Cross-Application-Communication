@@ -171,7 +171,7 @@ Gunicorn
 
 And that's the `requirements.txt` setup! Now's the tricky part, our REST API!
 
-### Setting up our REST API (main.py) file
+### Step 1D: Setting up our REST API (main.py) file
 
 
 
