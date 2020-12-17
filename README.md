@@ -1,6 +1,6 @@
 # Cross-Application Communication
 
-#### Ever wondered how to send a message from a 3rd party application to Roblox, like a *Remote Connection*? Well look no farther! This Github will explain all 3 steps of how to achieve this!
+#### Ever wondered how to send a message from a 3rd party application to Roblox, like a *Remote Connection*? Well, look no farther! This Github will explain all 3 steps of how to achieve this!
 
 #
 
@@ -9,12 +9,12 @@
 #### Before we continue, there are some prerequisites.
 * VS(C) - Visual Studio (Community) (IDE where you can create a plentiful amount of different types of applications) [VSC Download](https://visualstudio.microsoft.com/downloads/)
   * IDE where we'll be creating our application.
-* Python - Preferrably the latest version (Python3.9) [Python3 Download](https://www.python.org/downloads/)
+* Python - Preferably the latest version (Python3.9) [Python3 Download](https://www.python.org/downloads/)
   * Used for our REST API which is how we'll be communicating between applications.
-* Glich - You'll need a [Glitch](https://glitch.com/) account
+* Glitch - You'll need a [Glitch](https://glitch.com/) account
   * This is where we'll be hosting our REST API
   
-And then of course, we'll need Roblox Studio if you don't have that downloaded already.
+And then, of course, we'll need Roblox Studio if you don't have that downloaded already.
 
 #
 
@@ -22,7 +22,7 @@ And then of course, we'll need Roblox Studio if you don't have that downloaded a
 
 * #### What is a REST API?
 
-A **REST API** is simply a web server architectural style for handling HTTP Requests, it's also sometimes called **RESTful API**.
+A **REST API** is simply a web server architectural style for handling HTTP requests, it's also sometimes called **RESTful API**.
 
 **REST** stands for Representational (RE) State (S) Transfer (T) **->** Representational State Transfer (REST).
 
@@ -48,7 +48,7 @@ Though you don't need extensive knowledge as this is a step-by-step guide. You j
 
 ## Step 1: Glitch
 
-### Step 1A: Setting up our environent
+### Step 1A: Setting up our environment
 
 Head over to [glitch.com](https://glitch.com/) and sign in if you have an account, or create one if you don't have an account.
 
@@ -112,13 +112,13 @@ But what does this mean? This is indicating the command on how to run our **main
 
 `gunicorn -w 1 main:app` indicates that we're running our **main.py**'s **app** which is how we create our REST API through Flask, more about that later on. But what does the `1` mean? It means how many workers will be initiated to "work for our API".
 
-You will change this number depending on how many **cores** you have on your machine. Since we're using **Glitch**, it only has **3** core's. The equation to find out the number is `(2 x numberOfCores) + 1`. Glitch has 3 cores, so `(2 x 3) + 1` is equal to `7`. Though, since we're working with data that can be accessed by all workers, we can use a single worker and it'll do the same thing, except give better results than with 7 workers. Since they all have different data according to each of them, as in they each get their own copy of the script. So everytime there was a POST request sent it'd be 1/7 workers that have that data, so it's the same chance of receiving the same data.
+You will change this number depending on how many **cores** you have on your machine. Since we're using **Glitch**, it only has **3** cores. The equation to find out the number is `(2 x numberOfCores) + 1`. Glitch has 3 cores, so `(2 x 3) + 1` is equal to `7`. Though, since we're working with data that can be accessed by all workers, we can use a single worker and it'll do the same thing, except give better results than with 7 workers. Since they all have different data according to each of them, they each get their own copy of the script. So every time there was a POST request sent it'd be 1/7 workers that have that data, so it's the same chance of receiving the same data.
 
-**LINUX**: If you're wondering how to find out how many core's is on your machine: You can use `nproc` in the terminal and it'll output the amount of cores.
+**LINUX**: If you're wondering how to find out how many cores is on your machine: You can use `nproc` in the terminal and it'll output the number of cores.
 
 ![Image](https://i.gyazo.com/b155227e62967c21f5d9125020c2a02f.png)
 
-**WINDOWS**: If you're wondering how to find out how many core's is on your machine: You can press `Ctrl + Shift + Esc` (Opens Task Manager), press **More Details** at the bottom left of the window. Now, at the top you'll see a window called **Performance**; click that and then under the graph you'll see how many core's you have.
+**WINDOWS**: If you're wondering how to find out how many cores is on your machine: You can press `Ctrl + Shift + Esc` (Opens Task Manager), press **More Details** at the bottom left of the window. Now, at the top you'll see a window called **Performance**; click that, and then under the graph, you'll see how many core's you have.
 
 ![Image](https://i.gyazo.com/63f59fd4afb601bc78a37659e2360442.png)
 
@@ -137,7 +137,7 @@ The other lines aren't *as* important, but the only 2 other ones that are semi-i
 
 This will specify which file to install `requirements.txt`, and which file to execute when restarting `????.py`
 
-Alright, now the rest aren't really important. After all this, your **glitch.json** should look something like this. (Don't worry, there's extra stuff added here too)
+Alright, now the rest isn't really important. After all this, your **glitch.json** should look something like this. (Don't worry, there's extra stuff added here too)
 
 ```json
 {
@@ -194,7 +194,7 @@ from flask import Flask, request
 from flask_restful import Api
 ```
 
-Now we need to setup our app, so we can setup our api.
+Now we need to set up our app, so we can set up our api.
 
 We can do that by creating a new `app` object from `Flask`.
 
@@ -249,14 +249,14 @@ Now that we have our basic layout, we can set up our first route.
 
 We can do that with `@app.route(route, methods)`.
 
-An `endpoint` will have a `/` and then any word after it. So, for example an endpoint can be `/HelloWorld`. With methods, it's an array of valid methods that can be performed on this endpoint.
+An `endpoint` will have a `/` and then any word after it. So, for example, an endpoint can be `/HelloWorld`. With methods, it's an array of valid methods that can be performed on this endpoint.
 
 ```py
 @app.route("/HelloWorld", methods = ["GET"])
 ```
-This specifies the the endpoint will be the `BASE` url + the `ENDPOINT` url.
+This specifies the endpoint will be the `BASE` url + the `ENDPOINT` url.
 
-To find your base url, at the top left you'll see a button called `SHARE`; click it and a new window will show up. On the new window at the bottom you'll see a link, and next to it, it'll say `Live Site` with a paper clip next to it so you can copy it.
+To find your base url, at the top left you'll see a button called `SHARE`; click it and a new window will show up. On the new window at the bottom, you'll see a link, and next to it, it'll say `Live Site` with a paper clip next to it so you can copy it.
 
 ![Image](https://i.gyazo.com/a5030511cfc1e772ba76a93b0296315b.png)
 
@@ -289,7 +289,7 @@ if __name__ == "__main__":
   app.run(debug=False)
 ```
 
-`@app.route("/HelloWorld",methods=["GET"])` Is specifying the `endpoint` is the `BASE` URL + `Endpoint`. In this case the endpoint is `/HelloWorld`, so the function underneath will only run when the URL is sent a `GET` request, which is what `methods=["GET"]` specifies. You can add multiple methods or just 1, and you can change that one too.
+`@app.route("/HelloWorld",methods=["GET"])` Is specifying the `endpoint` is the `BASE` URL + `Endpoint`. In this case, the endpoint is `/HelloWorld`, so the function underneath will only run when the URL is sent a `GET` request, which is what `methods=["GET"]` specifies. You can add multiple methods or just 1, and you can change that one too.
 
 To test this, you can manually send a `GET` request to the BASE URL + Endpoint, or you can just do it online and test it.
 
@@ -297,7 +297,7 @@ You can use [REQBIN](https://reqbin.com/).
 
 ![Image](https://i.gyazo.com/3e955eaf8e1a0dfe8b0ca1615e12ae4b.png)
 
-You can also specify an argument *required* in the URL by doing `<TYPE:NAME>`. So, for example if I wanted a number from the string, I can specify that by doing `<int:num>`. Though, when you specify an argument in the URL and you want to receive it as an argument in the function, you'll receive it as the name you specified it as. So, for example.
+You can also specify an argument *required* in the URL by doing `<TYPE:NAME>`. So, for example, if I wanted a number from the string, I can specify that by doing `<int:num>`. Though, when you specify an argument in the URL and you want to receive it as an argument in the function, you'll receive it as the name you specified it as. So, for example.
 
 ```py
 @app.route("/HelloWorld/<int:num>",methods=["GET"])
@@ -309,7 +309,7 @@ Whatever number was passed through in the URL will be received as an argument in
 
 ![Image](https://i.gyazo.com/893e6e7fda571f19c803e13a8b6b0259.png)
 
-Now that the basics are explained, we can start learning how to setup the communication stage.
+Now that the basics are explained, we can start learning how to set up the communication stage.
 
 We'll need 2 Methods and 1 Endpoint. 1 Common Endpoint, 1 Method for `GET` requests, and 1 Method for `POST` requests.
 
@@ -370,7 +370,7 @@ elif request.method == "POST":
 
 This code will execute if the method was a `POST` request. It'll get the JSON part of the request, or the body, and loop through it and add it to the `messages` dictionary.
 
-Doing `dictionary[key] = value` adds an element to the dictionary where the key is set to a value. So, in this case `messages[word]` will set the key as `word` and doing `words[word]` will retrieve the word it was originally equal to from `words` and set that as the value to the key.
+Doing `dictionary[key] = value` adds an element to the dictionary where the key is set to a value. So, in this case `messages[word]` will set the key as `word`, and doing `words[word]` will retrieve the word it was originally equal to from `words` and set that as the value to the key.
 
 For example, if I sent a request of...
 
@@ -380,7 +380,7 @@ For example, if I sent a request of...
 }
 ```
 
-`Hello` would be `word` and `World` would be `words[word]`. In the `messages` dictionary it would look like...
+`Hello` would be `word` and `World` would be `words[word]`. In the `messages` dictionary, it would look like...
 
 ```py
 messages = {
@@ -411,7 +411,7 @@ from flask import Flask, request
 from flask_restful import Api, Resource
 ```
 
-Alright, now we need to setup our class that we'll be adding.
+Alright, now we need to set up our class that we'll be adding.
 
 ```py
 class HelloWorld(Resource):
@@ -466,11 +466,11 @@ api.add_resource(HelloWorld, "/HelloWorld/<int:num>")
 
 Either method works! I'll be doing the `@app.route("", methods = [])` method.
 
-Alright! That's the REST API setup! Let's move onto Roblox HTTP Requests!
+Alright! That's the REST API setup! Let's move on to Roblox HTTP Requests!
 
 ## Step 2: Roblox HTTP Requests
 
-Head on over to Roblox Studio. To start off, we're going to need to enable **HTTP Requests**. To do that, on the tabs at the top press **Home**. On the window below it, you'll see a button that says **Game Settings** with a blue gear. Press that and on the side bar press **Security** and make sure **Allow HTTP Requests** is enabled (it should be green).
+Head on over to Roblox Studio. To start off, we're going to need to enable **HTTP Requests**. To do that, on the tabs at the top press **Home**. On the window below it, you'll see a button that says **Game Settings** with a blue gear. Press that and on the sidebar press **Security** and make sure **Allow HTTP Requests** is enabled (it should be green).
 
 ![Image](https://i.gyazo.com/95e29d6ad237393b904aa1c3eb3cc60d.png)
 
@@ -488,7 +488,7 @@ local api = {}
 return api
 ```
 
-Is what we'll go with for setting up our module. Now, we need to add our **HTTPService** with our **GET** and **POST** requests to our **REST API**.
+This is what we'll go with for setting up our module. Now, we need to add our **HTTPService** with our **GET** and **POST** requests to our **REST API**.
 
 If you have your link, go ahead and paste it with a **local** variable.
 
@@ -524,7 +524,7 @@ end
 
 So, let's think about this. We'll be using [RequestAsync()](https://developer.roblox.com/en-us/api-reference/function/HttpService/RequestAsync).
 
-`RequestAsync` takes a dictionary, and gives back a dictionary. We'll also be using `pcall` like you would with any HTTP Request. We'll be handling the error, and the response.
+`RequestAsync` takes a dictionary, and gives back a dictionary. We'll also be using `pcall` like you would with any HTTP Request. We'll be handling the error and the response.
 
 ```lua
 function api.GET()
@@ -544,11 +544,11 @@ function api.GET()
 end
 ```
 
-Alright, let's talk about this. `local success, result`. `Success` is a `boolean`, meaning it's either `true` or `false`. `Result` is either the error message generated in the pcall if `success` is `false`. If `success` is `true`, then `result` will be whatever is returned from the pcall. If nothing is returned, it is then declared `nil`. `Pcall` just stands for `protected-call`, which means error's generated in this function don't error out in the console and doesn't stop the main thread from running.
+Alright, let's talk about this. `local success, result`. `Success` is a `boolean`, meaning it's either `true` or `false`. `Result` is either the error message generated in the pcall if `success` is `false`. If `success` is `true`, then `result` will be whatever is returned from the pcall. If nothing is returned, it is then declared `nil`. `Pcall` just stands for `protected-call`, which means errors generated in this function don't error out in the console and doesn't stop the main thread from running.
 
 With the `HTTPS:RequestAsync()` we gave it a dictionary where we specified the `Url`, which is our `BASE` url + `ENDPOINT` url. We then specified the method of `GET` since the function is supposed to be a `GET` request, we set the method as `GET`.
 
-We then checked if it was a successful, if it was then we return the JSON String version of the Body so they have options of what they want to do with it.
+We then checked if it was successful, if it was then we return the JSON String version of the Body so they have options of what they want to do with it.
 
 If it *wasn't* successful, then we generate an error message that tells us which status code and which message was generated from our API. We then throw an error with `error()` and yield the calling thread. We also have to use `tostring()` on `boolean`'s to concatenate them, or they'd error.
 
@@ -663,120 +663,3 @@ But, that's it for Roblox! We'll now need to work on our application in **C#** i
 ## Step 3: C# Application (VSC)
 
 Let's start off by opening Visual Studio and creating a new **Windows Form Application (.NET) - C#**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
