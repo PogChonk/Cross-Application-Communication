@@ -531,16 +531,15 @@ function api.GET()
 	local success, result = pcall(function()
 		return HTTPS:RequestAsync({
 			Url = BASE..ENDPOINT,
-			Method = "GET",
+			Method = "GET"
 		})
 	end)
-
+	
 	if success then
 		return result
 	else
 		local errorMessage = "\nSuccess: "..tostring(result.Success).."\nStatus: "..result.StatusCode.."\nMessage: "..result.StatusMessage.."\n"
 		error(errorMessage, 2)
-	end
 end
 ```
 
@@ -555,7 +554,7 @@ If it *wasn't* successful, then we generate an error message that tells us which
 Alright, now for our `POST` function. It's pretty similar to our `GET` function, so I'll only be explaining the new stuff.
 
 ```lua
-function api.POST(Data)
+function api.POST(data)
 	local success, result = pcall(function()
 		return HTTPS:RequestAsync({
 			Url = BASE..ENDPOINT,
@@ -563,22 +562,68 @@ function api.POST(Data)
 			Headers = {
 				["Content-Type"] = "application/json"
 			},
-			Body = HTTPS:JSONEncode(Data)
+			Body = HTTPS:JSONEncode(data)
 		})
 	end)
-
+	
 	if success then
 		return result
 	else
 		local errorMessage = "\nSuccess: "..tostring(result.Success).."\nStatus: "..result.StatusCode.."\nMessage: "..result.StatusMessage.."\n"
 		error(errorMessage, 2)
-	end
 end
 ```
 
 Alright, the only new thing here is that we changed the `Method` from `GET` to `POST`, so we can *send* data to our REST API. We also added `Headers` which is needed, because we're going to be sending `JSON`, so we're specifying that the content we're sending is `JSON`. We also then added the `Body` which is what our API will receive as the `request.get_json()`. We're making sure the data we're sending is valid JSON by using `JSONEncode` on the Body received.
 
 Now, that's our **ModuleScript** setup, now we need to have our **ServerScript** do `POST` and `GET` so we can make sure it works.
+
+Now, you're **ModuleScript** should look like this...
+
+```lua
+local api = {}
+
+local HTTPS = game:GetService("HttpService")
+
+local BASE = "https://testcommunications.glitch.me"
+local ENDPOINT = "/Messages"
+
+function api.GET()
+	local success, result = pcall(function()
+		return HTTPS:RequestAsync({
+			Url = BASE..ENDPOINT,
+			Method = "GET"
+		})
+	end)
+	
+	if success then
+		return result
+	else
+		local errorMessage = "\nSuccess: "..tostring(result.Success).."\nStatus: "..result.StatusCode.."\nMessage: "..result.StatusMessage.."\n"
+		error(errorMessage, 2)
+end
+
+function api.POST(data)
+	local success, result = pcall(function()
+		return HTTPS:RequestAsync({
+			Url = BASE..ENDPOINT,
+			Method = "POST",
+			Headers = {
+				["Content-Type"] = "application/json"
+			},
+			Body = HTTPS:JSONEncode(data)
+		})
+	end)
+	
+	if success then
+		return result
+	else
+		local errorMessage = "\nSuccess: "..tostring(result.Success).."\nStatus: "..result.StatusCode.."\nMessage: "..result.StatusMessage.."\n"
+		error(errorMessage, 2)
+end
+
+return api
+```
 
 We can do that by requiring the module and calling the functions.
 
