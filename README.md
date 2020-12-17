@@ -485,8 +485,6 @@ Alright, let's start off by configuring our **ModuleScript**.
 ```lua
 local api = {}
 
-
-
 return api
 ```
 
