@@ -531,15 +531,16 @@ function api.GET()
 	local success, result = pcall(function()
 		return HTTPS:RequestAsync({
 			Url = BASE..ENDPOINT,
-			Method = "GET"
+			Method = "GET",
 		})
 	end)
-	
+
 	if success then
 		return result
 	else
 		local errorMessage = "\nSuccess: "..tostring(result.Success).."\nStatus: "..result.StatusCode.."\nMessage: "..result.StatusMessage.."\n"
 		error(errorMessage, 2)
+	end
 end
 ```
 
@@ -565,12 +566,13 @@ function api.POST(data)
 			Body = HTTPS:JSONEncode(data)
 		})
 	end)
-	
+
 	if success then
 		return result
 	else
 		local errorMessage = "\nSuccess: "..tostring(result.Success).."\nStatus: "..result.StatusCode.."\nMessage: "..result.StatusMessage.."\n"
 		error(errorMessage, 2)
+	end
 end
 ```
 
@@ -592,15 +594,16 @@ function api.GET()
 	local success, result = pcall(function()
 		return HTTPS:RequestAsync({
 			Url = BASE..ENDPOINT,
-			Method = "GET"
+			Method = "GET",
 		})
 	end)
-	
+
 	if success then
 		return result
 	else
 		local errorMessage = "\nSuccess: "..tostring(result.Success).."\nStatus: "..result.StatusCode.."\nMessage: "..result.StatusMessage.."\n"
 		error(errorMessage, 2)
+	end
 end
 
 function api.POST(data)
@@ -614,12 +617,13 @@ function api.POST(data)
 			Body = HTTPS:JSONEncode(data)
 		})
 	end)
-	
+
 	if success then
 		return result
 	else
 		local errorMessage = "\nSuccess: "..tostring(result.Success).."\nStatus: "..result.StatusCode.."\nMessage: "..result.StatusMessage.."\n"
 		error(errorMessage, 2)
+	end
 end
 
 return api
