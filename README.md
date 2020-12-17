@@ -295,7 +295,7 @@ To test this, you can manually send a `GET` request to the BASE URL + Endpoint, 
 
 You can use [REQBIN](https://reqbin.com/).
 
-![Image](https://i.gyazo.com/fbe33b1b9cdec5b9a30ada36f90097da.png)
+![Image](https://i.gyazo.com/3e955eaf8e1a0dfe8b0ca1615e12ae4b.png)
 
 You can also specify an argument *required* in the URL by doing `<TYPE:NAME>`. So, for example if I wanted a number from the string, I can specify that by doing `<int:num>`. Though, when you specify an argument in the URL and you want to receive it as an argument in the function, you'll receive it as the name you specified it as. So, for example.
 
@@ -387,6 +387,18 @@ messages = {
   "Hello": "World"
 }
 ```
+
+![Image](https://i.gyazo.com/12194cf41eabdcf0e95438586fc8feb4.png)
+
+##### 1st `GET` Request
+
+![Image](https://i.gyazo.com/88dcbaf0d0030776899279c6f53dd06e.png)
+
+##### 1st `POST` Request
+
+![Image](https://i.gyazo.com/5490611f5552aa99c2c905d523d73e51.png)
+
+##### 2nd `GET` Request - As you can see, we get the same data!
 
 Alright! That's the REST API setup! Let's move onto Roblox HTTP Requests!
 
