@@ -390,15 +390,81 @@ messages = {
 
 ![Image](https://i.gyazo.com/12194cf41eabdcf0e95438586fc8feb4.png)
 
-##### 1st `GET` Request
+##### `GET` Request
 
 ![Image](https://i.gyazo.com/88dcbaf0d0030776899279c6f53dd06e.png)
 
-##### 1st `POST` Request
+##### `POST` Request
 
 ![Image](https://i.gyazo.com/5490611f5552aa99c2c905d523d73e51.png)
 
-##### 2nd `GET` Request - As you can see, we get the same data!
+##### `GET` Request - As you can see, we get the same data!
+
+### Step 1DA: Another way of setting up our Endpoints
+
+The method above (`@app.route("", methods=[])`) works good for setting up endpoints. But, maybe you want to set it up a different way. Well, you can create classes and add those as resources. There will be functions in those classes defining which methods are valid.
+
+Since we're needing resources, we'll have to import them from `flask_restful`.
+
+```py
+from flask import Flask, request
+from flask_restful import Api, Resource
+```
+
+Alright, now we need to setup our class that we'll be adding.
+
+```py
+class HelloWorld(Resource):
+```
+
+Now we need to define which methods are valid. We can do this by creating functions in these classes with the name of the methods, receiving `self`.
+
+```py
+class HelloWorld(Resource):
+  def get(self):
+```
+
+This indicates a Resource of `HelloWorld` will only accept `GET` requests.
+
+Now we just have to return something, and add it as a resource.
+
+```py
+class HelloWorld(Resource):
+  def get(self):
+    return {"Server": "HTTP 200: OK"}
+```
+
+All that's left is to add it as a resource to our api, and define our endpoint where it can be reached.
+
+```py
+api.add_resource(HelloWorld, "/HelloWorld")
+```
+
+So your code should look like this.
+
+```py
+class HelloWorld(Resource):
+  def get(self):
+    return {"Server": "Class Method"}
+    
+api.add_resource(HelloWorld, "/HelloWorld")
+```
+
+![Image](https://i.gyazo.com/9ced26f06c7b140bca4b5dd0da800251.png)
+
+You can add as many functions/methods that are allowed, and you even add specifiers in the URL if you want to, just like we did above.
+
+```py
+class HelloWorld(Resource):
+  def get(self, num):
+    return {"Server": "Class Method: " + str(num)}
+
+api.add_resource(HelloWorld, "/HelloWorld/<int:num>")
+```
+
+![Image](https://i.gyazo.com/7fa4ac982f5b466810cc6a235c04e8d6.png)
+
+Either method works! I'll be doing the `@app.route("", methods = [])` method.
 
 Alright! That's the REST API setup! Let's move onto Roblox HTTP Requests!
 
