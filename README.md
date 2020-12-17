@@ -470,18 +470,150 @@ Alright! That's the REST API setup! Let's move onto Roblox HTTP Requests!
 
 ## Step 2: Roblox HTTP Requests
 
+Head on over to Roblox Studio. To start off, we're going to need to enable **HTTP Requests**. To do that, on the tabs at the top press **Home**. On the window below it, you'll see a button that says **Game Settings** with a blue gear. Press that and on the side bar press **Security** and make sure **Allow HTTP Requests** is enabled (it should be green).
+
+![Image](https://i.gyazo.com/95e29d6ad237393b904aa1c3eb3cc60d.png)
+
+It should look something like this. After that, go ahead and create a **ModuleScript** located anywhere. I'll be creating mine in **ServerStorage** and naming it **RESTAPI**. I will then also be adding a **ServerScript** in **ServerScriptService** and naming it **Main**.
+
+![Image](https://i.gyazo.com/73ac76dc98e4a2346ae592158a3fdb4d.png)
+
+This is what my **SSS** and **SS** look like (ServerScriptService and ServerStorage).
+
+Alright, let's start off by configuring our **ModuleScript**.
+
+```lua
+local api = {}
 
 
 
+return api
+```
 
+Is what we'll go with for setting up our module. Now, we need to add our **HTTPService** with our **GET** and **POST** requests to our **REST API**.
 
+If you have your link, go ahead and paste it with a **local** variable.
 
+You can also add your **POST** and **GET** request endpoint's if they're different, or just one if it's the same.
 
+```lua
+local HTTPS = game:GetService("HttpService")
 
+local BASE = "https://testcommunications.glitch.me"
+local ENDPOINT = "/Messages"
+```
 
+Alright, now our setup should look something like this.
 
+```lua
+local api = {}
 
+local HTTPS = game:GetService("HttpService")
 
+local BASE = "https://testcommunications.glitch.me"
+local ENDPOINT = "/Messages"
+
+return api
+```
+
+Alright, now we can create our `GET` function and our `POST` function. In our `POST` function we'll only need arguments for stuff to send to our REST API.
+
+```
+function api.GET()
+
+end
+```
+
+So, let's think about this. We'll be using [RequestAsync()](https://developer.roblox.com/en-us/api-reference/function/HttpService/RequestAsync).
+
+`RequestAsync` takes a dictionary, and gives back a dictionary. We'll also be using `pcall` like you would with any HTTP Request. We'll be handling the error, and the response.
+
+```lua
+function api.GET()
+	local success, result = pcall(function()
+		return HTTPS:RequestAsync({
+			Url = BASE..ENDPOINT,
+			Method = "GET",
+		})
+	end)
+
+	if success then
+		return result
+	else
+		local errorMessage = "\nSuccess: "..tostring(result.Success).."\nStatus: "..result.StatusCode.."\nMessage: "..result.StatusMessage.."\n"
+		error(errorMessage, 2)
+	end
+end
+```
+
+Alright, let's talk about this. `local success, result`. `Success` is a `boolean`, meaning it's either `true` or `false`. `Result` is either the error message generated in the pcall if `success` is `false`. If `success` is `true`, then `result` will be whatever is returned from the pcall. If nothing is returned, it is then declared `nil`. `Pcall` just stands for `protected-call`, which means error's generated in this function don't error out in the console and doesn't stop the main thread from running.
+
+With the `HTTPS:RequestAsync()` we gave it a dictionary where we specified the `Url`, which is our `BASE` url + `ENDPOINT` url. We then specified the method of `GET` since the function is supposed to be a `GET` request, we set the method as `GET`.
+
+We then checked if it was a successful, if it was then we return the JSON String version of the Body so they have options of what they want to do with it.
+
+If it *wasn't* successful, then we generate an error message that tells us which status code and which message was generated from our API. We then throw an error with `error()` and yield the calling thread. We also have to use `tostring()` on `boolean`'s to concatenate them, or they'd error.
+
+Alright, now for our `POST` function. It's pretty similar to our `GET` function, so I'll only be explaining the new stuff.
+
+```lua
+function api.POST(Data)
+	local success, result = pcall(function()
+		return HTTPS:RequestAsync({
+			Url = BASE..ENDPOINT,
+			Method = "POST",
+			Headers = {
+				["Content-Type"] = "application/json"
+			},
+			Body = HTTPS:JSONEncode(Data)
+		})
+	end)
+
+	if success then
+		return result
+	else
+		local errorMessage = "\nSuccess: "..tostring(result.Success).."\nStatus: "..result.StatusCode.."\nMessage: "..result.StatusMessage.."\n"
+		error(errorMessage, 2)
+	end
+end
+```
+
+Alright, the only new thing here is that we changed the `Method` from `GET` to `POST`, so we can *send* data to our REST API. We also added `Headers` which is needed, because we're going to be sending `JSON`, so we're specifying that the content we're sending is `JSON`. We also then added the `Body` which is what our API will receive as the `request.get_json()`. We're making sure the data we're sending is valid JSON by using `JSONEncode` on the Body received.
+
+Now, that's our **ModuleScript** setup, now we need to have our **ServerScript** do `POST` and `GET` so we can make sure it works.
+
+We can do that by requiring the module and calling the functions.
+
+```lua
+local serverStorage = game:GetService("ServerStorage")
+local api = require(serverStorage:WaitForChild("RESTAPI"))
+```
+
+Make sure you change `RESTAPI` if you change the name of your Module!
+
+Now, we just call our functions!
+
+```lua
+print(api.GET())
+
+local dictionary = {
+  ["Hello"] = "World"
+}
+
+print(api.POST(dictionary))
+
+print(api.GET())
+```
+
+![Image](https://i.gyazo.com/1caf12ca14b94abfc42826f1e8c28ccb.png)
+
+As you can see, this method works!
+
+You can go the extra mile and create your own parser for the result, and you have plenty of options of what you want to customize!
+
+But, that's it for Roblox! We'll now need to work on our application in **C#** in *Visual Studio Community*.
+
+## Step 3: C# Application (VSC)
 
 
 
