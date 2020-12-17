@@ -613,6 +613,8 @@ But, that's it for Roblox! We'll now need to work on our application in **C#** i
 
 ## Step 3: C# Application (VSC)
 
+Let's start off by opening Visual Studio and creating a new **Windows Form Application (.NET) - C#**
+
 
 
 
