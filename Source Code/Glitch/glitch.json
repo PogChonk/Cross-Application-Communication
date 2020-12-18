@@ -1,0 +1,14 @@
+{
+  "install": "pip3 install --user -r requirements.txt",
+  "start": "PYTHONUNBUFFERED=True gunicorn -w 1 main:app",
+  "watch": {
+    "ignore": ["\\.pyc$"],
+    "install": {
+      "include": ["^requirements\\.txt$"]
+    },
+    "restart": {
+      "include": ["\\.py$", "^start\\.sh"]
+    },
+    "throttle": 1000
+  }
+}
