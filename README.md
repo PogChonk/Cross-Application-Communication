@@ -7,10 +7,13 @@
 ## Requirements
 
 #### Before we continue, there are some prerequisites.
+
 * VS(C) - Visual Studio (Community) (IDE where you can create a plentiful amount of different types of applications) [VSC Download](https://visualstudio.microsoft.com/downloads/)
   * IDE where we'll be creating our application.
+	
 * Python - Preferably the latest version (Python3.9) [Python3 Download](https://www.python.org/downloads/)
   * Used for our REST API which is how we'll be communicating between applications.
+	
 * Glitch - You'll need a [Glitch](https://glitch.com/) account
   * This is where we'll be hosting our REST API
   
@@ -32,7 +35,7 @@ A **REST API** is simply a web server architectural style for handling HTTP requ
 
 Simple, we'll be using a library written in Python for Python. It's called **Flask**, which is a Micro Web Framework. Why is it Micro? Because it does not require particular tools or libraries. It has no database abstraction layer, form validation, or any other components where pre-existing third-party libraries provide common functions.
 
-Since **Flask** itself isn't meant to be used as a production server, they recommend a proper WSGI. A pretty common WSGI Server that's used with Flask is **Gunicorn**. **Gunicorn** is a Python Web Server Gateway Interface HTTP server.
+Since **Flask** itself isn't meant to be used as a production server, they recommend a proper WSGI server. A pretty common WSGI Server that's used with Flask is **Gunicorn**. **Gunicorn** is a Python Web Server Gateway Interface HTTP server.
 
 * #### What languages do we need to know?
 
@@ -42,7 +45,9 @@ We will be creating our Application in Visual Studio Community, and C# is a comm
 
 We will be polling for our REST API in Roblox, which uses a revised version of Lua, called Luau. **Lua/u**
 
-Though you don't need extensive knowledge as this is a step-by-step guide. You just need to know the basics of Python, C#, and Luau. If not, that's fine! This will still work for you, just won't make as much sense. Feel free to do research before/after this to get a better understanding.
+Though you don't need extensive knowledge as this is a step-by-step guide. You just need to know the basics of Python, C#, and Luau. 
+
+##### If not, that's fine! This will still work for you, just won't make as much sense. Feel free to do research before/after this to get a better understanding.
 
 #
 
@@ -542,7 +547,11 @@ function api.GET()
 end
 ```
 
-Alright, let's talk about this. `local success, result`. `Success` is a `boolean`, meaning it's either `true` or `false`. `Result` is either the error message generated in the pcall if `success` is `false`. If `success` is `true`, then `result` will be whatever is returned from the pcall. If nothing is returned, it is then declared `nil`. `Pcall` just stands for `protected-call`, which means errors generated in this function don't error out in the console and doesn't stop the main thread from running.
+Alright, let's talk about this...
+
+`local success, result`. `Success` is a `boolean`, meaning it's either `true` or `false`. `Result` is either the error message generated in the pcall if `success` is `false`. If `success` is `true`, then `result` will be whatever is returned from the pcall. 
+
+If nothing is returned, it is then declared `nil`. `Pcall` just stands for `protected-call`, which means errors generated in this function don't error out in the console and doesn't stop the main thread from running.
 
 With the `HTTPS:RequestAsync()` we gave it a dictionary where we specified the `Url`, which is our `BASE` url + `ENDPOINT` url. We then specified the method of `GET` since the function is supposed to be a `GET` request, we set the method as `GET`.
 
@@ -574,7 +583,9 @@ function api.POST(data)
 end
 ```
 
-Alright, the only new thing here is that we changed the `Method` from `GET` to `POST`, so we can *send* data to our REST API. We also added `Headers` which is needed, because we're going to be sending `JSON`, so we're specifying that the content we're sending is `JSON`. We also then added the `Body` which is what our API will receive as the `request.get_json()`. We're making sure the data we're sending is valid JSON by using `JSONEncode` on the Body received.
+Alright, the only new thing here is that we changed the `Method` from `GET` to `POST`, so we can *send* data to our REST API. We also added `Headers` which is needed, because we're going to be sending `JSON`, so we're specifying that the content we're sending is `JSON`. 
+
+We also then added the `Body` which is what our API will receive as the `request.get_json()`. We're making sure the data we're sending is valid JSON by using `JSONEncode` on the Body received.
 
 Now, that's our **ModuleScript** setup, now we need to have our **ServerScript** do `POST` and `GET` so we can make sure it works.
 
@@ -654,7 +665,6 @@ You don't have to send just a dictionary, numbers, strings, booleans, and arrays
 
 ![Image](https://i.gyazo.com/1caf12ca14b94abfc42826f1e8c28ccb.png)
 
-
 ![Image](https://i.gyazo.com/1caf12ca14b94abfc42826f1e8c28ccb.png)
 
 As you can see, this method works!
@@ -707,7 +717,9 @@ private void postRequest_Click(object sender, EventArgs e)
 	}
 ```
 
-You'll see something like this. Though, we're going to need a `HttpClient` for our `HTTP Requests`. So, let's define our `HttpClient` above our `InitializeComponent();` and we'll set our required properties inside of it. By default `HttpClient`'s library isn't being used, so you'll need to add `using System.Net.Http;` at the top, where the rest of the `using`'s are. We're also going to need to create a new `Uri` not `Url` to our `BASE` url, where we'll assign `HttpClient.BaseAddress`. Alongside that, we're going to need to create a `UserAgent` as that's how our Http Requests verify the application/program. For that you'll need to add another library, `using System.Net.Http.Headers;`.
+You'll see something like this. Though, we're going to need a `HttpClient` for our `HTTP Requests`. So, let's define our `HttpClient` above our `InitializeComponent();` and we'll set our required properties inside of it. By default `HttpClient`'s library isn't being used, so you'll need to add `using System.Net.Http;` at the top, where the rest of the `using`'s are. 
+
+We're also going to need to create a new `Uri` not `Url` to our `BASE` url, where we'll assign `HttpClient.BaseAddress`. Alongside that, we're going to need to create a `UserAgent` as that's how our Http Requests verify the application/program. For that you'll need to add another library, `using System.Net.Http.Headers;`.
 
 ```csharp
 using System.Net.Http;
@@ -799,7 +811,9 @@ private async void getRequest_Click(object sender, EventArgs e)
 var data = response.Content.ReadAsStringAsync().Result;
 ```
 
-This get's the Content from our response, then puts into a string that we can read from, and then we get the result from that, which is our response from our API. So, we can set that as the text from our `GET` request TextBox. Now, `response` also has the success code that we can use for our display whether or not there was an error.
+This get's the Content from our response, then puts into a string that we can read from, and then we get the result from that, which is our response from our API. 
+
+So, we can set that as the text from our `GET` request TextBox. Now, `response` also has the success code that we can use for our display whether or not there was an error.
 
 ```csharp
 var message = "HTTP Response: " + response.StatusCode.ToString();
@@ -946,9 +960,40 @@ As a result of this, it also works! Huzzah!
 
 # Optional Step: Building your application (for release/publication)
 
+At the top of your screen you will see a `Build` tab. Click that, and choose `Build Solution`.
+
+In the output, it will tell you the directory of where the file was built.
+
+![Image](https://cdn.discordapp.com/attachments/784546024664334360/789288225469497354/unknown.png)
+
+There, you will see all the files that are needed to run the program.
+
+![Image](https://i.gyazo.com/70175266bfb771cdea3443e3fd9a5efa.png)
+
+The file that you'll want to run is `SolutionName.exe`.
+
+![Image](https://i.gyazo.com/a04eed5affbfad5e3b83910345dc0633.png)
+
+Run that file and that will be the program that you made!
+
 #
 
-Now that this is the end, feel free to do more research, expand upon this, and customize it however you want! There will be updates to this underneath this post. If there are any problems that didn't seem to work out, or you don't know how to do something, feel free to post it under `Issues`.
+Now that this is the end, feel free to do more research, expand upon this, and customize it however you want! 
+
+There will be updates to this underneath this post. 
+
+If there are any problems that didn't seem to work out, or you don't know how to do something, feel free to post it under `Issues`.
+
+Feel free to create an installer if you're planning on distributing your product.
+
+All the the source code for each program will be available.
+
+* Glitch Code
+	* Link to the Glitch site that hosts the code too.
+* Visual Studio Source Code
+* Roblox Studio Files
+
+If you think I missed something, something can be improved, or something's wrong, let me know! I'll gladly fix the issues (`Issues` can be used for notifying).
 
 #
 
