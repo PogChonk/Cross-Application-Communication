@@ -1005,4 +1005,4 @@ If you think I missed something, something can be improved, or something's wrong
 
 #
 
-#### Written by: killerbrenden
+#### Author: killerbrenden
