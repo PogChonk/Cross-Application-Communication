@@ -317,12 +317,12 @@ We can easily set that up by specifying the endpoint and the methods that are al
 
 Since we imported `request` we can check which method, and get the data they're sending by using `request.method == ""` and `request.get_json()`.
 
-The `GET` request is simple. We just return the `messages` table.
+The `GET` request is simple. We just return the `messages` array.
 
-The `POST` request is also pretty simple. We just use the `get_json()` method and for loop through all the keys and add it to the `messages` and index the result of `request.get_json()` with the iterator variable.
+The `POST` request is also pretty simple. We just use the `get_json()` method and append it to the end of the array by doing `messages.append(words)`.
 
 ```py
-messages = {}
+messages = []
 
 @app.route("/Messages", methods = ["GET", "POST"])
 
@@ -331,15 +331,14 @@ def handleRequests():
     return {"Server": "HTTP 200: OK", "Data": message}
   elif request.method == "POST":
     words = request.get_json()
-    for word in words:
-      messages[word] = words[word]
+    messages.append(words)
     return {"Server": "HTTP 201: Created"}
 ```
 
 ```py
 messages = {}
 ```
-is the dictionary that'll hold all the messages to and fro applications.
+Is the array that'll hold all the messages to and fro applications.
 
 ```py
 @app.route("/Messages", methods = ["GET", "POST"])
@@ -363,14 +362,13 @@ Is what executes if the method was a `GET` request. It'll return a dictionary th
 ```py
 elif request.method == "POST":
     words = request.get_json()
-    for word in words:
-      messages[word] = words[word]
+    messages.append(words)
     return {"Server": "HTTP 201: Created"}
 ```
 
-This code will execute if the method was a `POST` request. It'll get the JSON part of the request, or the body, and loop through it and add it to the `messages` dictionary.
+This code will execute if the method was a `POST` request. It'll get the JSON part of the request, or the body, and append it to the end of the `messages` array.
 
-Doing `dictionary[key] = value` adds an element to the dictionary where the key is set to a value. So, in this case `messages[word]` will set the key as `word`, and doing `words[word]` will retrieve the word it was originally equal to from `words` and set that as the value to the key.
+Doing `array.append(element)` adds an element to the end of the array. So, in this case `messages.append(words)` will add the `words` string to the end of the `messages` array.
 
 For example, if I sent a request of...
 
@@ -652,6 +650,11 @@ print(api.POST(dictionary))
 print(api.GET())
 ```
 
+You don't have to send just a dictionary, numbers, strings, booleans, and arrays work too.
+
+![Image](https://i.gyazo.com/1caf12ca14b94abfc42826f1e8c28ccb.png)
+
+
 ![Image](https://i.gyazo.com/1caf12ca14b94abfc42826f1e8c28ccb.png)
 
 As you can see, this method works!
@@ -662,4 +665,291 @@ But, that's it for Roblox! We'll now need to work on our application in **C#** i
 
 ## Step 3: C# Application (VSC)
 
-Let's start off by opening Visual Studio and creating a new **Windows Form Application (.NET) - C#**
+Let's start off by installing the essentials.
+
+This is what you'll need to install...
+
+![Image](https://i.gyazo.com/fda50a9262bb3f4f541a8cda0559abc6.png)
+
+##### Feel free to install other ones you might like and use later on.
+
+Alright, now you can sign into a Microsoft Account, or skip this step; your choice here.
+
+Your screen would look something like this.
+
+![Image](https://i.gyazo.com/eec923ff47d6dba885cc61bd84f928e4.png)
+
+Let's **Create a new project**.
+
+![Image](https://i.gyazo.com/0b9e34b1668235f7f9d4ace703d7caed.png)
+
+Choose the `Windows Forms App (.NET Framework)` and then press **Next**. The next step is all up to you, what you want to name it and where it'll be stored. Then press **Create**.
+
+Now a new window should've opened with a blank form. Feel free to customize it; on the left of your screen you'll see a tab called `Toolbox` which is where all the UI elements are at.
+
+While you are customizing it, make sure you have 2 Buttons, and 2 TextBox's. One for the response of the `GET` request, and one for the body of the `POST` request. The buttons will also be used to send a `GET` request and `POST` request.
+
+![Image](https://i.gyazo.com/1c50d7857c12483055411734aa86a306.png)
+
+This is how I have mine setup. There's a property of `TextBox` that has `ReadOnly`, set that to true; don't forget to enable `Multline` as well.
+
+Alright, **double-click** on your **GET** request button. Go back to your form, and then **double-click** on your **POST** request button.
+
+```csharp
+private void getRequest_Click(object sender, EventArgs e)
+	{
+		
+	}
+	
+private void postRequest_Click(object sender, EventArgs e)
+	{
+		
+	}
+```
+
+You'll see something like this. Though, we're going to need a `HttpClient` for our `HTTP Requests`. So, let's define our `HttpClient` above our `InitializeComponent();` and we'll set our required properties inside of it. By default `HttpClient`'s library isn't being used, so you'll need to add `using System.Net.Http;` at the top, where the rest of the `using`'s are. We're also going to need to create a new `Uri` not `Url` to our `BASE` url, where we'll assign `HttpClient.BaseAddress`. Alongside that, we're going to need to create a `UserAgent` as that's how our Http Requests verify the application/program. For that you'll need to add another library, `using System.Net.Http.Headers;`.
+
+```csharp
+using System.Net.Http;
+using System.Net.Http.Headers;
+
+HttpClient client = new HttpClient();
+Uri uri = new Uri("https://testcommunications.glitch.me");
+
+client.BaseAddress = uri;
+client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("AnyStringOrName", "1.0")));
+```
+
+Are the new lines you should have in your code. So far, you should have:
+
+```csharp
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Windows.Forms;
+
+namespace TestCommunication
+{
+    public partial class TestCommunicationForm : Form
+    {
+        HttpClient client = new HttpClient();
+        Uri uri = new Uri("https://testcommunications.glitch.me");
+        public TestCommunicationForm()
+        {
+            InitializeComponent();
+            client.BaseAddress = uri;
+            client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("AnyStringOrName", "1.0")));
+        }
+
+        private void getRequest_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void postRequest_Click(object sender, EventArgs e)
+        {
+            
+        }
+    }
+}
+```
+
+Obviously not *exactly* like this since you would customize this to your liking, but should be similar enough.
+
+```csharp
+HttpClient client = new HttpClient();
+Uri uri = new Uri("https://testcommunications.glitch.me");
+```
+
+This creates a new `HttpClient` called `client`. This is how we'll be sending and receiving our Http Requests. With assiging the `BaseAddress`, it takes a `Uri` and not a `Url`, so that's why we have `Uri uri = new Uri("https://testcommunications.glitch.me");` which creates a new Uri from our BASE Url.
+
+```csharp
+client.BaseAddress = uri;
+client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("AnyStringOrName", "1.0")));
+```
+
+This set's the `BaseAddress` to the Uri we created which will simplify the writing we have to do for requests since it's automatically used when we do our requests. We then need a `UserAgent` which is required for the Http Request to be validated by any webserver.
+
+Alright, let's set up our `GET` request. Since our requests are `async` functions, or `asynchronous`, we can set our button click functions as `async` functions so we can use the `await` keyword.
+
+```csharp
+private async void getRequest_Click(object sender, EventArgs e)
+	{
+		
+	}
+	
+private async void postRequest_Click(object sender, EventArgs e)
+	{
+		
+	}
+```
+
+Alright, now for our `GET` request, we will use `HttpClient.GetAsync("/Endpoint")`, but replacing `HttpClient` with our defined Client. In this case, our endpoint is `/Message`.
+
+```csharp
+private async void getRequest_Click(object sender, EventArgs e)
+	{
+		var response = await client.GetAsync("/Messages");
+	}
+```
+
+`response` is now our `task` object that holds all the data responded from our API. So, we can easily get the result by doing:
+
+```csharp
+var data = response.Content.ReadAsStringAsync().Result;
+```
+
+This get's the Content from our response, then puts into a string that we can read from, and then we get the result from that, which is our response from our API. So, we can set that as the text from our `GET` request TextBox. Now, `response` also has the success code that we can use for our display whether or not there was an error.
+
+```csharp
+var message = "HTTP Response: " + response.StatusCode.ToString();
+
+messageDisplay.Text = message;
+getResponse.Text = data;
+```
+
+This set's the `getResponse`'s Text (TextBox for GET Response) to the data that was returned from our Http Request.
+
+Alright, now your `GET` request button should look like this:
+
+```csharp
+private async void getRequest_Click(object sender, EventArgs e)
+	{
+		var response = await client.GetAsync("/Messages");
+
+		var data = response.Content.ReadAsStringAsync().Result;
+		var message = "HTTP Response: " + response.StatusCode.ToString();
+
+		messageDisplay.Text = message;
+		getResponse.Text = data;
+	}
+```
+
+![Image](https://i.gyazo.com/4ad861678d2b2f97753c109921bc631b.png)
+
+Alright, now for our `POST` request button!
+
+For this part, we're going to need a package called `Newtonsoft`. To install this, simply type:
+
+```csharp
+var json = JsonConvert.SerializeObject(postData.Text);
+```
+
+`JsonConvert` will be underlined, hover over it and click quick fixes. At the bottom you'll see `Install Newtonsoft.Json`, click that and choose `Find and Install Package`.
+
+Then the argument to be sent through will be the text of the TextBox for `POST` requests, in this case `postData` is what I named it.
+
+We'll then need to convert it into a `StringContent` since `PostAsync` requires a certain type of object to send, and a `StringContent` object is one of them.
+
+```csharp
+var data = new StringContent(json, Encoding.UTF8, "application/json");
+```
+
+`Encoding.UTF8` will also be underlined, you'll need to add `using System.Text;`.
+
+Now, we just do the same request we did with `GET`, except change `GetAsync` to `PostAsync` and add our `data` as another argument.
+
+```csharp
+var response = await client.PostAsync("/Messages", data);
+```
+
+So, with some customizations, your `POST` request button code should look something like:
+
+```csharp
+private async void postRequest_Click(object sender, EventArgs e)
+{
+		var json = JsonConvert.SerializeObject(postData.Text);
+		var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+		postData.Text = "";
+
+		var response = await client.PostAsync("/Messages", data);
+
+		postData.Text = response.Content.ReadAsStringAsync().Result;
+		messageDisplay.Text = "HTTP Response: " + response.StatusCode.ToString();
+}
+```
+
+After everything, your whole script should look like:
+
+```csharp
+using Newtonsoft.Json;
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Windows.Forms;
+
+namespace TestCommunication
+{
+    public partial class TestCommunicationForm : Form
+    {
+        HttpClient client = new HttpClient();
+        Uri uri = new Uri("https://testcommunications.glitch.me");
+
+        public TestCommunicationForm()
+        {
+            InitializeComponent();
+            client.BaseAddress = uri;
+            client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("AnyStringOrName", "1.0")));
+        }
+        private async void getRequest_Click(object sender, EventArgs e)
+        {
+            var response = await client.GetAsync("/Messages");
+
+            var data = response.Content.ReadAsStringAsync().Result;
+            var message = "HTTP Response: " + response.StatusCode.ToString();
+
+            messageDisplay.Text = message;
+            getResponse.Text = data;
+        }
+
+        private async void postRequest_Click(object sender, EventArgs e)
+        {
+            var json = JsonConvert.SerializeObject(postData.Text);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+            postData.Text = "";
+
+            var response = await client.PostAsync("/Messages", data);
+
+            postData.Text = response.Content.ReadAsStringAsync().Result;
+            messageDisplay.Text = "HTTP Response: " + response.StatusCode.ToString();
+        }
+    }
+}
+```
+
+And surprise! That's the end! Now we can test our `POST` and `GET` requests.
+
+![Image](https://i.gyazo.com/00b65c1efd8908e4a4f653771f774594.png)
+
+![Image](https://i.gyazo.com/97402ed9672a4beac46c671b17eb9c12.png)
+
+Tah-dah! It works!
+
+Now, let's send a message from our Application to our REST API, and see if we can pick it up on Roblox!
+
+![Image](https://i.gyazo.com/c17d7434cbcf664f7266b1b9692b0c3e.png)
+
+![Image](https://i.gyazo.com/201e2705dfeace3a620be4306e424693.png)
+
+![Image](https://i.gyazo.com/849d0a7ffb3e9f4e22914699205ce421.png)
+
+As a result, it works! How about the other way around?
+
+![Image](https://i.gyazo.com/1fd7e225404e5562720cd2b8d2a8731c.png)
+
+![Image](https://i.gyazo.com/54d6315e3d6fefbc13f937bb7f00bcd2.png)
+
+As a result of this, it also works! Huzzah!
+
+# Optional Step: Building your application (for release/publication)
+
+#
+
+Now that this is the end, feel free to do more research, expand upon this, and customize it however you want! There will be updates to this underneath this post. If there are any problems that didn't seem to work out, or you don't know how to do something, feel free to post it under `Issues`.
+
+#
+
+#### Written by: killerbrenden
