@@ -119,6 +119,14 @@ But what does this mean? This is indicating the command on how to run our **main
 
 You will change this number depending on how many **cores** you have on your machine. Since we're using **Glitch**, it only has **3** cores. The equation to find out the number is `(2 x numberOfCores) + 1`. Glitch has 3 cores, so `(2 x 3) + 1` is equal to `7`. Though, since we're working with data that can be accessed by all workers, we can use a single worker and it'll do the same thing, except give better results than with 7 workers. Since they all have different data according to each of them, they each get their own copy of the script. So every time there was a POST request sent it'd be 1/7 workers that have that data, so it's the same chance of receiving the same data.
 
+> The `(2 x numberOfCores) + 1` is an estimation by `Gunicorn` of how many workers should be active. In our case, we only need one since we want to get consistent returns. 
+
+> DO NOT scale the number of workers to the number of clients you expect to have. Gunicorn should only need 4-12 worker processes to handle hundreds or thousands of requests per second.
+
+> Gunicorn relies on the operating system to provide all of the load balancing when handling requests. Generally we recommend (2 x $num_cores) + 1 as the number of workers to start off with. While not overly scientific, the formula is based on the assumption that for a given core, one worker will be reading or writing from the socket while the other worker is processing a request.
+
+[Gunicorn](https://docs.gunicorn.org/en/0.16.1/design.html#:~:text=Gunicorn%20should%20only%20need%204,workers%20to%20start%20off%20with.)
+
 **LINUX**: If you're wondering how to find out how many cores is on your machine: You can use `nproc` in the terminal and it'll output the number of cores.
 
 ![Image](https://i.gyazo.com/b155227e62967c21f5d9125020c2a02f.png)
