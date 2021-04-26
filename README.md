@@ -399,17 +399,18 @@ messages = {
 }
 ```
 
-![Image](https://i.gyazo.com/12194cf41eabdcf0e95438586fc8feb4.png)
+![Image](https://cdn.discordapp.com/attachments/836040518294437891/836041371822587904/unknown.png)
 
 ##### `GET` Request
 
-![Image](https://i.gyazo.com/88dcbaf0d0030776899279c6f53dd06e.png)
+![Image](https://cdn.discordapp.com/attachments/836040518294437891/836041830650740766/unknown.png)
 
 ##### `POST` Request
 
-![Image](https://i.gyazo.com/5490611f5552aa99c2c905d523d73e51.png)
+![Image](https://cdn.discordapp.com/attachments/836040518294437891/836041926426886154/unknown.png)
 
 ##### `GET` Request - As you can see, we get the same data!
+##### Feel free to customize how you parse your JSON and store/send it.
 
 ### Step 1DA: Another way of setting up our Endpoints
 
