@@ -528,7 +528,7 @@ return api
 
 Alright, now we can create our `GET` function and our `POST` function. In our `POST` function we'll only need arguments for stuff to send to our REST API.
 
-```
+```lua
 function api.GET()
 
 end
@@ -671,8 +671,6 @@ print(api.GET())
 ```
 
 You don't have to send just a dictionary, numbers, strings, booleans, and arrays work too.
-
-![Image](https://i.gyazo.com/1caf12ca14b94abfc42826f1e8c28ccb.png)
 
 ![Image](https://i.gyazo.com/1caf12ca14b94abfc42826f1e8c28ccb.png)
 
