@@ -349,7 +349,7 @@ def handleRequests():
 ```
 
 ```py
-messages = {}
+messages = []
 ```
 Is the array that'll hold all the messages to and fro applications.
 
